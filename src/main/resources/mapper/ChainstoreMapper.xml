@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supermarket.mapper.ChainstoreMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.supermarket.pojo.Chainstore">
+        <id column="chainstore_id" property="chainstoreId" />
+        <result column="chainstore_address" property="chainstoreAddress" />
+        <result column="chainstore_director" property="chainstoreDirector" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        chainstore_id, chainstore_address, chainstore_director
+    </sql>
+
+</mapper>

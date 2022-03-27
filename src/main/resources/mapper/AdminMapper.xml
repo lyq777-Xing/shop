@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supermarket.mapper.AdminMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.supermarket.pojo.Admin">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="phone" property="phone" />
+        <result column="enabled" property="enabled"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, phone, enabled
+    </sql>
+    <resultMap id="AdminWithRoles" type="com.example.supermarket.pojo.Admin" extends="BaseResultMap">
+        <collection property="roles" ofType="com.example.supermarket.pojo.Role">
+            <id column="rid" property="roleid" />
+            <result column="rname" property="rolename" />
+            <result column="rpermission" property="permission" />
+        </collection>
+    </resultMap>
+    <select id="getAllAdmins" resultMap="AdminWithRoles">
+        select
+            a.*,
+            r.roleid rid,
+            r.rolename rname,
+            r.permission rpermission
+        from sm_admin a
+        LEFT JOIN sm_admin_role ar ON a.id = ar.adminId
+        LEFT JOIN sm_role r ON ar.rid = r.roleid
+        order by a.id
+    </select>
+    <select id="getPage" resultMap="AdminWithRoles">
+        select
+            a.*,
+            r.roleid rid,
+            r.rolename rname,
+            r.permission rpermission
+        from sm_admin a
+        LEFT JOIN sm_admin_role ar ON a.id = ar.adminId
+        LEFT JOIN sm_role r ON ar.rid = r.roleid
+        <where>
+            <if test="null != keywords and '' != keywords">
+                and r.rolename like concat('%',#{keywords},'%')
+            </if>
+            <if test=" beginDateScope != null and 2 == beginDateScope.length ">
+                and beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+    </select>
+</mapper>

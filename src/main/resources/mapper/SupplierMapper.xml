@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supermarket.mapper.SupplierMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.supermarket.pojo.Supplier">
+        <id column="s_id" property="id" />
+        <result column="s_suppliername" property="suppliername" />
+        <result column="s_productname" property="productname" />
+        <result column="s_supplierid" property="supplierid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, suppliername, productname, supplierid
+    </sql>
+    <resultMap id="SupplierInfo" type="com.example.supermarket.pojo.Supplier" extends="BaseResultMap">
+        <association property="admin" javaType="com.example.supermarket.pojo.AdminVo">
+            <id column="id" property="id" />
+            <result column="username" property="username" />
+            <result column="password" property="password" />
+            <result column="phone" property="phone" />
+            <result column="enabled" property="enabled"/>
+        </association>
+    </resultMap>
+
+    <select id="getSupplierPage" resultMap="SupplierInfo">
+        SELECT  a.*,
+        s.id s_id,
+        s.suppliername s_suppliername,
+        s.productname s_productname,
+        s.supplierid s_supplierid
+        FROM sm_supplier s
+        LEFT JOIN sm_adminVo a ON s.supplierid=a.id
+        <where>
+            <if test=" supplier.suppliername !=null and supplier.suppliername !=''">
+                and s.suppliername like CONCAT('%',#{supplier.suppliername},'%')
+            </if>
+            <if test=" supplier.supplierid !=null and supplier.supplierid !=''">
+                and s.supplierid =#{supplier.supplierid}
+            </if>
+            <if test=" beginDateScope != null and 2 == beginDateScope.length ">
+                and beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+    </select>
+</mapper>

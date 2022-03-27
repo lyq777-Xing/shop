@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supermarket.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.supermarket.pojo.Menu">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="parentId" property="parentId" />
+    </resultMap>
+    <resultMap id="Menus" type="com.example.supermarket.pojo.Menu" extends="BaseResultMap">
+        <collection property="children" ofType="com.example.supermarket.pojo.Menu">
+            <id column="id2" property="id" />
+            <result column="name2" property="name" />
+            <result column="url2" property="url" />
+            <result column="parentId2" property="parentId" />
+        </collection>
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, url, parentId
+    </sql>
+    <select id="getMenusByAdminId" resultMap="Menus">
+        SELECT
+            DISTINCT m1.*,
+                     m2.id AS id2,
+                     m2.name AS name2,
+                     m2.parentId AS parentId2
+        FROM
+            sm_menu m1,
+            sm_menu m2,
+            sm_admin_role ar,
+            sm_role_menu mr
+        WHERE
+            m1.id = m2.parentId
+            AND ar.adminId = #{id}
+            AND ar.rid = mr.roleid
+            AND mr.menuid = m2.id
+        ORDER BY
+            m1.id,
+            m2.id
+    </select>
+    <select id="getMenusWithRole" resultMap="MenusWithRole">
+        SELECT m.*,
+            r.roleid AS rid,
+            r.rolename AS rname,
+            r.permission AS rpermission
+        FROM sm_menu m,
+            sm_role_menu mr,
+            sm_role r
+        WHERE
+            m.id = mr.menuid
+            AND mr.roleid = r.roleid
+        ORDER BY m.id
+    </select>
+
+    <resultMap id="MenusWithRole" type="com.example.supermarket.pojo.Menu" extends="BaseResultMap">
+        <collection property="roles" ofType="com.example.supermarket.pojo.Role">
+            <id column="rid" property="roleid" />
+            <result column="rname" property="rolename"/>
+            <result column="rpermission" property="permission" />
+        </collection>
+    </resultMap>
+</mapper>

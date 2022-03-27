@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supermarket.mapper.AdminRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.supermarket.pojo.AdminRole">
+        <id column="id" property="id" />
+        <result column="adminid" property="adminid" />
+        <result column="rid" property="rid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, adminid, rid
+    </sql>
+    <update id="addAdminRole">
+        insert into t_admin_role(adminId, rid) values
+        <foreach collection="rids"
+                 item="rid" separator=",">
+            (#{adminId}, #{rid})
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supermarket.mapper.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.supermarket.pojo.Goods">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="purchasing_price" property="purchasingPrice" />
+        <result column="selling_price" property="sellingPrice" />
+        <result column="supplierid" property="supplierid" />
+        <result column="produceddate" property="produceddate" />
+        <result column="incomingdate" property="incomingdate" />
+        <result column="baozhiqi" property="baozhiqi" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, purchasing_price, selling_price, supplierid, produceddate, incomingdate, baozhiqi
+    </sql>
+    <resultMap id="GoodsInfo" type="com.example.supermarket.pojo.Goods" extends="BaseResultMap">
+        <association property="supplier" javaType="com.example.supermarket.pojo.Supplier">
+            <result column="s_id" property="id" />
+            <result column="s_suppliername" property="suppliername" />
+            <result column="s_productname" property="productname" />
+            <result column="s_supplierid" property="supplierid" />
+        </association>
+    </resultMap>
+
+    <select id="getGoodsPage" resultMap="GoodsInfo">
+        SELECT  g.*,
+        s.id s_id,
+        s.suppliername s_suppliername,
+        s.productname s_productname,
+        s.supplierid s_supplierid
+        FROM sm_goods g
+        LEFT JOIN sm_supplier s ON g.supplierid=s.id
+        <where>
+            <if test=" goods.name !=null and goods.name !=''">
+                and g.name like CONCAT('%',#{goods.name},'%')
+            </if>
+            <if test=" goods.supplierid !=null and goods.supplierid !=''">
+                and g.supplierid =#{goods.supplierid}
+            </if>
+            <if test=" beginDateScope != null and 2 == beginDateScope.length ">
+                and beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+    </select>
+</mapper>
