@@ -88,10 +88,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
                 "/login",
-                "logout",
+                "/logout",
                 "/css/**",
                 "/js/**",
-                "index.html",
+                "/index.html",
                 "favicon.ico",
                 "/doc.html",
                 "/webjars/**",

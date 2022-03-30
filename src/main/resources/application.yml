@@ -52,8 +52,8 @@ jwt:
   tokenHead: Bearer
 redis:
   host: 127.0.0.1
-  port: 6381
-  password: 123456
+  port: 6379
+  password:
   database: 0
   # 连接超时时间
   timeout: 10000ms

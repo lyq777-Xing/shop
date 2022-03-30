@@ -21,6 +21,7 @@ public class Swagger2Config {
     public Docket createRestApi() {
         // 配置扫描包，生成文档      
         return new Docket(DocumentationType.SWAGGER_2)
+            .pathMapping("/")
             .apiInfo(apiInfo())         
             .select()                
             .apis(RequestHandlerSelectors.basePackage("com.example.supermarket.controller"))
@@ -46,7 +47,7 @@ public class Swagger2Config {
     private List<SecurityContext> securityContexts() {
         // 需要登录认证的路径
         List<SecurityContext> result = new ArrayList<>();
-        result.add(getContextByPath("/test/.*"));
+        result.add(getContextByPath("/.*"));
         return result;
     }
     private SecurityContext getContextByPath(String pathRegex) {
