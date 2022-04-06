@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.zjitc.mapper.MenusMapper">
+    <select id="findOne" resultType="MenusVo">
+        SELECT p.`ps_id` AS id,p.`ps_name` AS authName,p.`ps_pid` AS pid,p_a.`ps_api_path` AS path,p.`ps_level` FROM sp_permission p LEFT JOIN sp_permission_api p_a ON  p.`ps_id`=p_a.`ps_id` WHERE ps_level = 1</select>
+    <select id="findTwo" resultType="MenusVo">
+        SELECT p.`ps_id` AS id,p.`ps_name` AS authName,p.`ps_pid` AS pid,p_a.`ps_api_path` AS path,p.`ps_level` FROM sp_permission p LEFT JOIN sp_permission_api p_a ON  p.`ps_id`=p_a.`ps_id` WHERE ps_level = 3</select>
+</mapper>

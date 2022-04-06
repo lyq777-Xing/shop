@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.zjitc.mapper.UsersRoleVomapper">
+    <select id="findAll" resultType="UsersRoleVo" parameterType="java.lang.String">
+        SELECT m.`mg_id` AS id,m.`mg_name` AS username ,m.`mg_mobile` AS mobile,m.`mg_email` AS email,m.`mg_state` AS mg_state,m.`mg_pwd` AS PASSWORD,    FROM_UNIXTIME(
+                CONVERT (m.`mg_time`, SIGNED) / 1000,
+                '%Y-%m-%d %H:%i:%s'
+            ) AS create_time,r.`role_name` AS role_name FROM sp_manager m LEFT JOIN sp_role r ON m.`role_id`=r.`role_id` WHERE m.`mg_name` LIKE CONCAT('%',#{username},'%')
+    </select>
+    <select id="findById" resultType="UsersRoleVo" parameterType="java.lang.Integer">
+        SELECT m.`mg_id` AS id,m.`mg_name` AS username ,m.`mg_mobile` AS mobile,m.`mg_email` AS email,m.`mg_state` AS mg_state,m.`mg_pwd` AS PASSWORD,    FROM_UNIXTIME(
+                CONVERT (m.`mg_time`, SIGNED) / 1000,
+                '%Y-%m-%d %H:%i:%s'
+            ) AS create_time,r.`role_name` AS role_name FROM sp_manager m LEFT JOIN sp_role r ON m.`role_id`=r.`role_id` WHERE m.`mg_id`=#{id}
+    </select>
+    <select id="findRoleNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT sp_role.`role_name` FROM sp_role WHERE sp_role.`role_id` =
+        (SELECT sp_manager.`role_id` FROM sp_manager WHERE sp_manager.`mg_id` = #{id})
+    </select>
+</mapper>

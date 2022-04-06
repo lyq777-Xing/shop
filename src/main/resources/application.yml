@@ -1,0 +1,48 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /a1/private/v1
+
+spring:
+  profiles:
+    active: jdbc
+  jackson:
+    date-format: java.text.SimpleDateFormat
+    default-property-inclusion: non_null
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: net.zjitc.entity
+  mapper-locations: classpath:/net/zjitc/mapper/*.xml
+
+swagger:
+  enable: false
+
+
+#  mvc:
+#    view:
+#      suffix: .html
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+  servlet:
+    multipart:
+      max-request-size: 50MB
+      max-file-size: 50MB
+
+markerhub:
+  jwt:
+    header: Authorization
+    exprie: 604800
+    secret: sderftgyhijnhg67y8u4e3ws27896gt5
+
+
+
+
+
+
+

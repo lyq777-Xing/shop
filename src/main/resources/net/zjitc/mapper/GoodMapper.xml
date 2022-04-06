@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.zjitc.mapper.GoodMapper">
+ <!--   <resultMap id="selectGoodByIdMap" type="net.zjitc.entity.Good">
+<<<<<<< HEAD
+=======
+>>>>>>> dbf16d6 (完成了商品管理)
+>>>>>>> goods
+        <id column="goods_id" property="goods_id" />
+        <result column="goods_name" property="goods_name"/>
+        <result column="goods_price" property="goods_price"/>
+        <result column="goods_number" property="goods_number"/>
+        <result column="goods_weight" property="goods_weight"/>
+        <result column="goods_introduce" property="goods_introduce"/>
+        <result column="goods_state" property="goods_state"/>
+        <result column="add_time" property="add_time"/>
+        <result column="upd_time" property="upd_time"/>
+        <result column="hot_mumber" property="hot_mumber"/>
+        <result column="is_promote" property="is_promote"/>
+        <collection property="pics" ofType="net.zjitc.entity.Pic">
+            <id column="pics_id" property="pics_id" />
+            <result column="goods_id" property="goods_id" />
+            <result column="pics_big" property="pics_big" />
+            <result column="pics_mid" property="pics_mid" />
+            <result column="pics_sma" property="pics_sma" />
+        </collection>
+        <collection property="attrs" ofType="net.zjitc.entity.vo.AttrVo">
+            <result column="goods_id" property="goods_id" />
+            <result column="attr_id" property="attr_id" />
+            <result column="attr_value" property="attr_value" />
+            <result column="add_price" property="add_price" />
+            <result column="attr_name" property="attr_name" />
+            <result column="attr_sel" property="attr_sel" />
+            <result column="attr_write" property="attr_write" />
+            <result column="attr_vals" property="attr_vals" />
+        </collection>
+    </resultMap>
+    <select id="selectGoodById" resultMap="selectGoodByIdMap" parameterType="java.lang.Integer">
+        SELECT * FROM
+            sp_goods AS g
+                LEFT JOIN sp_goods_attr AS ga ON g.`goods_id` = ga.`goods_id`
+                LEFT JOIN sp_goods_pics AS gp ON g.`goods_id` = gp.`goods_id`
+        WHERE g.`goods_id` = #{id}
+    </select>
+
+-->
+</mapper>
