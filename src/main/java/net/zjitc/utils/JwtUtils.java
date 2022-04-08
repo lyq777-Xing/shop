@@ -25,7 +25,7 @@ public class JwtUtils {
      */
     public String generateToken(String username){
         Date date = new Date();
-        Date date1 = new Date(date.getTime() + 1000 + exprie);
+        Date date1 = new Date(date.getTime() + 20000000);
 
         return  Jwts.builder()
                     .setHeaderParam("typ","JWT")

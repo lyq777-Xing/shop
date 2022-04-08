@@ -7,8 +7,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.zjitc.common.ResponseResult;
 import net.zjitc.entity.Good;
+import net.zjitc.entity.Users;
 import net.zjitc.exception.CatException;
 import net.zjitc.service.GoodService;
+import net.zjitc.service.SupplierService;
+import net.zjitc.service.UserRoleVoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,9 @@ import java.util.List;
 public class GoodController {
     @Autowired
     private GoodService goodService;
+
+    @Autowired
+    private UserRoleVoService userRoleVoService;
 
     /**
      * 获取所有商品信息（带分页）
@@ -100,8 +106,14 @@ public class GoodController {
                 if(selectGoodByGoodName != null){
                     result.BadRequest("请输入正确的name");
                 }else {
-                    Good good1 = goodService.addGood(good);
-                    result.Create("创建商品成功",good1);
+//                    判断供货商是否存在
+                    Users supplier = userRoleVoService.findSupplierById(good.getSupplierService_id());
+                    if(supplier == null){
+                        result.BadRequest("请输入正确的供货商id");
+                    }else {
+                        Good good1 = goodService.addGood(good);
+                        result.Create("创建商品成功",good1);
+                    }
                 }
             } catch (CatException e) {
 //                e.printStackTrace();
@@ -136,13 +148,21 @@ public class GoodController {
             if(good1 == null){
                 result.BadRequest("请输入正确的id，该id对应的商品不存在",null);
             }else {
-                Good good3 = goodService.selectGoodByGoodName(good.getGoods_name());
-                if(good3 != null){
-                    result.BadRequest("该用户名已经存在",null);
-                }else {
+//                判断用户是否修改了商品名
+                if(good1.getGoods_name().equals(good.getGoods_name())){
+//                    表明未修改
                     Good good2 = goodService.updateGoodById(id, good);
                     result.Success("修改商品信息成功",good2);
+                }else {
+                    Good good3 = goodService.selectGoodByGoodName(good.getGoods_name());
+                    if(good3 != null){
+                        result.BadRequest("该商品名称已经存在",null);
+                    }else {
+                        Good good2 = goodService.updateGoodById(id, good);
+                        result.Success("修改商品信息成功",good2);
+                    }
                 }
+
             }
         }
         return result;
