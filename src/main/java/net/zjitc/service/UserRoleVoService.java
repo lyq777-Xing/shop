@@ -21,13 +21,13 @@ public interface UserRoleVoService {
 
     List<Users> findByUsername(Users users);
 
-    List<UsersRoleVo> findById(Integer id);
+//    List<UsersRoleVo> findById(Integer id);
 
     List<Users> addUsers(Users users);
 
     List<Users> findByname(String username);
 
-    List<Users> update(Users users);
+//    List<Users> update(Users users);
 
     void deleteUSer(Integer id);
 
@@ -54,5 +54,8 @@ public interface UserRoleVoService {
     Users findSimpleById(Integer id);
 
     Users findSupplierById(Integer id);
+
+    Users update(Users users);
+
 
 }

@@ -25,13 +25,15 @@ public class Good {
     @TableField("goods_in_price")
     private Integer goods_in_price;
     @TableField("manufacture_date")
-    private Date manufacture_date;
+    private String manufacture_date;
     @TableField("quality_date")
     private String quality_date;
     @TableField("goods_in_date")
-    private Date goods_in_date;
+    private String goods_in_date;
     @TableField("SupplierService_id")
     private Integer SupplierService_id;
+    @TableField(exist = false)
+    private String supplier;
 
     public void setGoodsId(Integer goods_id) {
         this.goods_id = goods_id;
@@ -53,7 +55,7 @@ public class Good {
         this.goods_in_price = goods_in_price;
     }
 
-    public void setManufactureDate(Date manufacture_date) {
+    public void setManufactureDate(String manufacture_date) {
         this.manufacture_date = manufacture_date;
     }
 
@@ -61,7 +63,7 @@ public class Good {
         this.quality_date = quality_date;
     }
 
-    public void setGoodsInDate(Date goods_in_date) {
+    public void setGoodsInDate(String goods_in_date) {
         this.goods_in_date = goods_in_date;
     }
 

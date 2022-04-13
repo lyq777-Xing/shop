@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -107,6 +108,36 @@ public class ChainStoreController {
         }catch (Exception e){
             e.printStackTrace();
             result.BadRequest("更新失败");
+        }
+        return result;
+    }
+
+
+    /**
+     * 根据id查询连锁店
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据id查询连锁店")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "会员卡id", required = true)
+    })
+    @PreAuthorize("hasAuthority('findChainStore')")
+    @GetMapping("/chainstore/findbyid")
+    public ResponseResult findById(Integer id){
+        ResponseResult<Object> result = new ResponseResult<>();
+        try{
+            ChainStore chainStore = chainStoreService.findById(id);
+            if(chainStore == null){
+                result.BadRequest("查询失败");
+            }else {
+                ArrayList<ChainStore> list = new ArrayList<>();
+                list.add(chainStore);
+                result.Success("查询成功",list);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.BadRequest("查询失败");
         }
         return result;
     }

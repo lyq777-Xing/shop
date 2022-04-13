@@ -35,4 +35,10 @@ public class IMembershipCardService extends ServiceImpl<MembershipCardMapper,Mem
         membershipCardMapper.insert(membershipCard);
         return membershipCard;
     }
+
+    @Override
+    public MembershipCard findById(Integer id) {
+        MembershipCard membershipCard = membershipCardMapper.selectById(id);
+        return membershipCard;
+    }
 }

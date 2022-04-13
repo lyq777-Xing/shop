@@ -13,4 +13,6 @@ public interface ChainStoreService {
     void delete(Integer id);
 
     ChainStore update(ChainStore chainStore);
+
+    ChainStore findById(Integer id);
 }

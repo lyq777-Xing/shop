@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import net.zjitc.common.ResponseResult;
 import net.zjitc.entity.MembershipCard;
 import net.zjitc.service.MembershipCardService;
@@ -12,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -109,6 +112,7 @@ public class MembershipCardController {
     public ResponseResult add(@RequestBody MembershipCard membershipCard){
         ResponseResult<Object> result = new ResponseResult<>();
         try{
+            membershipCard.setCreate_time(new Date());
             MembershipCard add = membershipCardService.add(membershipCard);
             if(add == null){
                 result.BadRequest("添加错误");
@@ -118,6 +122,35 @@ public class MembershipCardController {
         }catch (Exception e){
             e.printStackTrace();
             result.BadRequest("添加错误");
+        }
+        return result;
+    }
+
+    /**
+     * 根据id查询会员卡信息
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据id查询会员卡")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "会员卡对id", required = true)
+    })
+    @PreAuthorize("hasAuthority('findMembershipCard')")
+    @GetMapping("/membershipcard/findbyid")
+    public ResponseResult findById(Integer id){
+        ResponseResult<Object> result = new ResponseResult<>();
+        try{
+            MembershipCard byId = membershipCardService.findById(id);
+            if(byId == null){
+                result.BadRequest("查询失败");
+            }else {
+                ArrayList<MembershipCard> list = new ArrayList<>();
+                list.add(byId);
+                result.Success("查询成功",list);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.BadRequest("查询失败");
         }
         return result;
     }

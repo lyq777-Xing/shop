@@ -26,7 +26,7 @@ public class Users {
     private String mobile;
     @TableField("mg_pwd")
     private String password;
-    @TableField(exist = false)
+    @TableField("mg_email")
     private String email;
     @TableField("role_id")
     private Integer rid;

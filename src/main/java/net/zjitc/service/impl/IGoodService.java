@@ -5,10 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.zjitc.entity.Good;
 
+import net.zjitc.entity.Users;
 import net.zjitc.exception.CatException;
 import net.zjitc.mapper.GoodMapper;
-import net.zjitc.mapper.SupplierMapper;
 import net.zjitc.service.GoodService;
+import net.zjitc.service.UserRoleVoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,8 @@ public class IGoodService implements GoodService {
     private GoodMapper goodMapper;
 
     @Autowired
-    private SupplierMapper supplierMapper;
+    private UserRoleVoService userRoleVoService;
+
 
     @Override
     public List<Good> findGoodsList() {
@@ -34,6 +36,15 @@ public class IGoodService implements GoodService {
     public Page<Good> findGoodsPage(Integer pagenum,Integer pagesize) {
         Page<Good> page = new Page<>(pagenum, pagesize);
         Page<Good> goodPage = goodMapper.selectPage(page, null);
+        for (int i = 0; i < goodPage.getRecords().size(); i++) {
+//            根据id查询供货商
+            Good good = goodPage.getRecords().get(i);
+//            System.out.println(good);
+            Users supplier = userRoleVoService.findSupplierById(good.getSupplierService_id());
+            if(supplier != null){
+                goodPage.getRecords().get(i).setSupplier(supplier.getUsername());
+            }
+        }
         return goodPage;
     }
 
@@ -76,8 +87,17 @@ public class IGoodService implements GoodService {
         QueryWrapper<Good> wrapper = new QueryWrapper<>();
         wrapper.like("goods_name",name);
         Page<Good> goodPage = new Page<>(pagenum,pagesize);
-        Page<Good> goods = goodMapper.selectPage(goodPage, wrapper);
-        return goods;
+        goodPage = goodMapper.selectPage(goodPage, wrapper);
+        for (int i = 0; i < goodPage.getRecords().size(); i++) {
+//            根据id查询供货商
+            Good good = goodPage.getRecords().get(i);
+//            System.out.println(good);
+            Users supplier = userRoleVoService.findSupplierById(good.getSupplierService_id());
+            if(supplier != null){
+                goodPage.getRecords().get(i).setSupplier(supplier.getUsername());
+            }
+        }
+        return goodPage;
 
     }
 

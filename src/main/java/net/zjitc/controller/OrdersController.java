@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import net.zjitc.common.ResponseResult;
 import net.zjitc.entity.Orders;
 import net.zjitc.service.OrdersService;
@@ -74,7 +75,7 @@ public class OrdersController {
             @ApiImplicitParam(name = "Orders", value = "Orders对象", required = true)
     })
     @PreAuthorize("hasAuthority('updateOrder')")
-    @PostMapping("/orders/updatestatus")
+    @PutMapping("/orders/updatestatus")
     public ResponseResult updatestatus(@RequestBody Orders orders){
         ResponseResult<Object> result = new ResponseResult<>();
         try{
@@ -86,4 +87,53 @@ public class OrdersController {
         }
         return result;
     }
+
+    /**
+     * 添加订单
+     * @param orders
+     * @return
+     */
+    @ApiOperation(value = "添加订单")
+    @PreAuthorize("hasAuthority('createOrder')")
+    @PostMapping("/order/add")
+    public ResponseResult add(@RequestBody Orders orders){
+        ResponseResult<Object> result = new ResponseResult<>();
+        try{
+            Orders orders1 = ordersService.addOrder(orders);
+            if(orders1 == null){
+                result.BadRequest("创建失败");
+            }else {
+                result.Success("创建成功",orders1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.BadRequest("创建失败");
+        }
+        return result;
+    }
+
+    /**
+     * 根据id查询订单
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据id查询订单")
+    @PreAuthorize("hasAuthority('getAllOrders')")
+    @GetMapping("/order/findbyid")
+    public ResponseResult findById(Integer id){
+        ResponseResult<Object> result = new ResponseResult<>();
+        try{
+            Orders byId = ordersService.findById(id);
+            if(byId == null){
+                result.BadRequest("查询失败");
+            }else {
+                result.Success("查询成功",byId);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.BadRequest("查询失败");
+        }
+        return result;
+    }
+
 }

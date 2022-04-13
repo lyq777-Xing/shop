@@ -20,6 +20,8 @@ public class Orders {
     private String order_title;
     @TableField("order_id")
     private String order_id;
+    @TableField(exist = false)
+    private String supplier;
 
     public void setOrderId(String order_id) {
         this.order_id = order_id;

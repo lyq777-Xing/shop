@@ -88,11 +88,11 @@ public class UserRoleVoServiceImpl implements UserRoleVoService {
         return users1;
     }
 
-    @Override
-    public List<UsersRoleVo> findById(Integer id) {
-        List<UsersRoleVo> byId = usersRoleVomapper.findById(id);
-        return byId;
-    }
+//    @Override
+//    public List<UsersRoleVo> findById(Integer id) {
+//        List<UsersRoleVo> byId = usersRoleVomapper.findById(id);
+//        return byId;
+//    }
 
     @Override
     public List<Users> addUsers(Users users) {
@@ -115,15 +115,10 @@ public class UserRoleVoServiceImpl implements UserRoleVoService {
     }
 
     @Override
-    public List<Users> update(Users users) {
+    public Users update(Users users) {
 //        usersRoleVomapper.updateById(users);
-        List<Users> list=new ArrayList<>();
-        list.add(users);
-        Users users1 = usersRoleVomapper.selectById(users.getId());
-        users1.setEmail(users.getEmail());
-        users1.setMobile(users.getMobile());
-        usersRoleVomapper.updateById(users1);
-        return list;
+        int i = usersRoleVomapper.updateById(users);
+        return users;
     }
 
     @Override
@@ -262,7 +257,7 @@ public class UserRoleVoServiceImpl implements UserRoleVoService {
     @Override
     public List<Users> findAllAdmins() {
         QueryWrapper<Users> wrapper = new QueryWrapper<>();
-        wrapper.eq("role_id",30);
+        wrapper.eq("role_id",30).or().eq("role_id",50);
         List<Users> users = usersRoleVomapper.selectList(wrapper);
         for (Users user:users) {
             user.setPassword(null);

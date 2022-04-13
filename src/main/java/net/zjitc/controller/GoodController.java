@@ -10,13 +10,10 @@ import net.zjitc.entity.Good;
 import net.zjitc.entity.Users;
 import net.zjitc.exception.CatException;
 import net.zjitc.service.GoodService;
-import net.zjitc.service.SupplierService;
 import net.zjitc.service.UserRoleVoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController

@@ -55,4 +55,10 @@ public class IChainStoreService implements ChainStoreService {
         chainStoreMapper.updateById(chainStore);
         return chainStore;
     }
+
+    @Override
+    public ChainStore findById(Integer id) {
+        ChainStore chainStore = chainStoreMapper.selectById(id);
+        return chainStore;
+    }
 }

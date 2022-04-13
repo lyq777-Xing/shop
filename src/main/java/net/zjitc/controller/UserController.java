@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -91,21 +92,21 @@ public class UserController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "根据id查询用户", notes = "参数为用户id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户id", required = true)
-    })
-    @PreAuthorize("hasAuthority('getManager')")
-    @GetMapping("/users/{id}")
-    public ResponseResult findById(@PathVariable("id") Integer id){
-
-        List<UsersRoleVo> byId = userRoleVoService.findById(id);
-        ResponseResult<Object> result=new ResponseResult<>();
-        result.Success("查询成功",byId);
-        return result;
-
-
-    }
+//    @ApiOperation(value = "根据id查询用户", notes = "参数为用户id")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "用户id", required = true)
+//    })
+//    @PreAuthorize("hasAuthority('getManager')")
+//    @GetMapping("/users/{id}")
+//    public ResponseResult findById(@PathVariable("id") Integer id){
+//
+//        List<UsersRoleVo> byId = userRoleVoService.findById(id);
+//        ResponseResult<Object> result=new ResponseResult<>();
+//        result.Success("查询成功",byId);
+//        return result;
+//
+//
+//    }
 
     /**
      * 添加用户
@@ -133,8 +134,6 @@ public class UserController {
             result.Create("用户创建成功",users1);
             return result;
         }
-
-
     }
 
     /**
@@ -279,7 +278,9 @@ public class UserController {
             if(admin == null){
                 result.BadRequest("该管理员不存在");
             }else {
-                result.Success("查询成功",admin);
+                List<Users> list=new ArrayList<>();
+                list.add(admin);
+                result.Success("查询成功",list);
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -307,7 +308,9 @@ public class UserController {
             if(cashier == null){
                 result.BadRequest("该收银员不存在");
             }else {
-                result.Success("查询成功",cashier);
+                List<Users> list=new ArrayList<>();
+                list.add(cashier);
+                result.Success("查询成功",list);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -334,7 +337,9 @@ public class UserController {
             if(users == null){
                 result.BadRequest("该用户不存在");
             }else {
-                result.Success("查询成功",users);
+                List<Users> list=new ArrayList<>();
+                list.add(users);
+                result.Success("查询成功",list);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -367,6 +372,44 @@ public class UserController {
             e.printStackTrace();
             result.BadRequest("查询失败");
         }
+        return result;
+    }
+
+    /**
+     * 更新用户
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "根据id修改用户")
+    @PreAuthorize("hasAuthority('updateManager')")
+    @PutMapping("/users/update")
+    public ResponseResult update(@RequestBody Users users){
+        ResponseResult<Object> result = new ResponseResult<>();
+        try {
+            Users update = userRoleVoService.update(users);
+            result.Success("更新成功",update);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.BadRequest("更新失败");
+        }
+        return result;
+    }
+
+    /**
+     * 删除管理员
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "删除管理员",notes = "用户id放在url请求中")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", required = true)
+    })
+    @PreAuthorize("hasAuthority('deleteAdmin')")
+    @DeleteMapping("/admin/{id}")
+    public ResponseResult deleteAdmin(@PathVariable("id") Integer id){
+        userRoleVoService.deleteUSer(id);
+        ResponseResult<Object> result=new ResponseResult<>();
+        result.Success("删除成功");
         return result;
     }
 }
