@@ -14,7 +14,7 @@ import java.util.Date;
 @ConfigurationProperties(prefix = "markerhub.jwt")
 public class JwtUtils {
 
-    private long exprie;
+    private long exprie=30 * 24 * 60 * 60 * 1000;
 
     private String secret;
 
@@ -25,7 +25,7 @@ public class JwtUtils {
      */
     public String generateToken(String username){
         Date date = new Date();
-        Date date1 = new Date(date.getTime() + 20000000);
+        Date date1 = new Date(date.getTime() + exprie);
 
         return  Jwts.builder()
                     .setHeaderParam("typ","JWT")
@@ -33,7 +33,7 @@ public class JwtUtils {
                     .setSubject(username)
     //                创建时间
                     .setIssuedAt(date)
-    //                过期时间(7days)
+    //                过期时间(15days)
                     .setExpiration(date1)
     //                密钥
                     .signWith(SignatureAlgorithm.HS512,secret)

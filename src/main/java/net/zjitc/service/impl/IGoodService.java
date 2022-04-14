@@ -32,6 +32,12 @@ public class IGoodService implements GoodService {
         return goodList;
     }
 
+    /**
+     * 查询所有商品
+     * @param pagenum
+     * @param pagesize
+     * @return
+     */
     @Override
     public Page<Good> findGoodsPage(Integer pagenum,Integer pagesize) {
         Page<Good> page = new Page<>(pagenum, pagesize);

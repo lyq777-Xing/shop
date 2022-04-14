@@ -133,7 +133,7 @@ public class MembershipCardController {
      */
     @ApiOperation(value = "根据id查询会员卡")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "会员卡对id", required = true)
+            @ApiImplicitParam(name = "id", value = "会员卡id", required = true)
     })
     @PreAuthorize("hasAuthority('findMembershipCard')")
     @GetMapping("/membershipcard/findbyid")

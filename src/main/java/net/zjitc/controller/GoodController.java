@@ -113,8 +113,8 @@ public class GoodController {
                     }
                 }
             } catch (CatException e) {
-//                e.printStackTrace();
-                result.BadRequest("请输入正确的cat_id");
+                e.printStackTrace();
+                result.BadRequest("创建商品失败");
             }
         }
         return result;
