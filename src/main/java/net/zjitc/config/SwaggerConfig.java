@@ -1,5 +1,6 @@
 package net.zjitc.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+@EnableKnife4j
 public class SwaggerConfig {
 
     @Bean
